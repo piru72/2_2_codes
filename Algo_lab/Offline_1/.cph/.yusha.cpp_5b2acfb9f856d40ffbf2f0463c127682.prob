@@ -1,0 +1,1 @@
+{"name":"Local: yusha","url":"d:\\2_2_codes\\Algo_lab\\Offline_1\\yusha.cpp","tests":[{"id":1654459432677,"input":"10 9 8 7 6 5 4 3 2 1","output":"1 2 3 5 7 8 9 11 12 23"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\2_2_codes\\Algo_lab\\Offline_1\\yusha.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: quick_sort","url":"d:\\2_2_codes\\Algo_lab\\Offline_1\\quick_sort.cpp","tests":[{"id":1654459209816,"input":"1 2 8 3 11 5 23 7 9 12","output":"1 2 3 5 7 8 9 11 12 23"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\2_2_codes\\Algo_lab\\Offline_1\\quick_sort.cpp","group":"local","local":true}
