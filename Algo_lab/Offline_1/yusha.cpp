@@ -5,7 +5,7 @@ using namespace std;
 #define rep1(i,n) for(int i = 0; i < n; i++)
 int partition(vector<int>&s, int low, int high)
 {
-    int pivot=s[(low+high)/2];
+    int pivot=s[high];
     while(low<=high)
     {
         while(s[low]<pivot)

@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "system_error": "cpp",
+        "xstring": "cpp",
+        "ostream": "cpp",
+        "iterator": "cpp",
+        "xutility": "cpp",
+        "initializer_list": "cpp",
+        "type_traits": "cpp",
+        "xlocale": "cpp"
+    }
+}

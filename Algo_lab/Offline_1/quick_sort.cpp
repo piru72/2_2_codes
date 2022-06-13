@@ -1,75 +1,74 @@
 #include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
-int a[10] = {1, 2, 8, 3, 11, 5, 23, 7, 9, 12};
 
-int Partition(int *a, int m, int p)
+int Partition(int *arr, int lowest_index, int highest_index)
 {
 
-    // int mid = (m + p) / 2;
-    // int u = a[(m + p) / 2];
-    int u = a[m];
-    int i = m;
-    int j = p;
-    while (i <= j)
+    int pivot_element = arr[highest_index];
+
+    while (lowest_index <= highest_index)
     {
-        i = i + 1;
-        while (a[i] < u)
+         lowest_index = lowest_index + 1;
+        while (arr[lowest_index] < pivot_element)
         {
-            i = i + 1;
+            lowest_index = lowest_index + 1;
         }
-        j = j - 1;
-        while (a[j] > u)
+        highest_index = highest_index - 1;
+        while (arr[highest_index] > pivot_element)
         {
-            j = j - 1;
+            highest_index = highest_index - 1;
         }
-        if (i < j)
+        if (lowest_index < highest_index)
         {
-            swap(a[i], a[j]);
+            swap(arr[lowest_index], arr[highest_index]);
         }
     }
 
-    a[m] = a[j];
-    a[j] = u;
-    return j;
+    arr[lowest_index] = arr[highest_index];
+    arr[highest_index] = pivot_element;
+    return highest_index;
 }
 
-void quickSort(int p, int q)
+void quickSort(int *arr, int lowes_index, int highest_index)
 {
-    if (p < q)
+    if (lowes_index < highest_index)
     {
-        int j = Partition(a, p, q + 1);
-        quickSort(p, j - 1);
-        quickSort(j + 1, q);
+        int j = Partition(arr, lowes_index, highest_index+1 );
+        quickSort(arr, lowes_index, j - 1);
+        quickSort(arr, j + 1, highest_index);
     }
 }
 int main()
 {
-    int size = sizeof(a) / sizeof(a[0]);
-    int lowest_index = 0;
-    int highest_index = size - 1;
+    // int size = sizeof(a) / sizeof(a[0]);
 
     // cout << "Input the array size : " << endl;
 
-    // int size;
-    // cin >> size;
-    // for (int i = 0; i < size; i++)
-    // {
-    //     cin >> a[i];
-    // }
+    int size;
+    cin >> size;
 
-    cout << "The unsorted array is: " << endl;
+    int arr[size];
+
+    int lowest_index = 0;
+    int highest_index = size - 1;
     for (int i = 0; i < size; i++)
     {
-        cout << a[i] << " ";
+        cin >> arr[i];
     }
-    cout << endl;
 
-    quickSort(lowest_index, highest_index);
+    // cout << "The unsorted array is: " << endl;
+    // for (int i = 0; i < size; i++)
+    // {
+    //     cout << a[i] << " ";
+    // }
+    // cout << endl;
 
-    cout << "Sorted array: \n";
+    quickSort(arr, lowest_index, highest_index);
+
+    // cout << "Sorted array: \n";
     for (int i = 0; i < size; i++)
-        cout << a[i] << " ";
+        cout << arr[i] << " ";
     cout << endl;
 
     return 0;
