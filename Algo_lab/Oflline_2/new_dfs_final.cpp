@@ -64,6 +64,7 @@ void BFS(int source)
     cout << source << ">>";
     order.push_back(source);
     s.push_back(source);
+    // s.insert(s.begin(), source);
     while (!s.empty())
     {
         if (graph[s.front()].size() == 0)
@@ -72,8 +73,15 @@ void BFS(int source)
         }
         else if (graph[s.front()].size() > 0)
         {
-            for0(graph[s.front()].size())
+            for (int i = 0; i < graph[s.front()].size(); i++)
+            {
+                // s.push_back(graph[s.front()][i]);
+
+                int target = graph[s.front()][i];
+                //cout << "Pushing" << target << endl;
+               // s.insert(s.begin(), target);
                 s.push_back(graph[s.front()][i]);
+            }
 
             print_bfs();
         }
