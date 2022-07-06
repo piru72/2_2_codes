@@ -11,7 +11,6 @@ int user_infinity = 101;
 void sample_graph()
 {
 
-
     graph[1].push_back(101);
     graph[1].push_back(20);
     graph[1].push_back(30);
