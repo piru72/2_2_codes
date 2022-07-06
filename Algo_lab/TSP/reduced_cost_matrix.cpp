@@ -111,6 +111,27 @@ void showq(queue<int> gq)
     cout << '\n';
 }
 
+vector<vector<int>> set_row_column_to_infinity(vector<vector<int>> myVector, int row, int column)
+{
+
+    for (int i = 0; i < myVector.size(); i++)
+    {
+        for (int j = 0; j < myVector[i].size(); j++)
+        {
+            if (i == row)
+            {
+                myVector[i][j] = 101;
+            }
+            else if (j == column)
+            {
+                myVector[i][j] = 101;
+            }
+        }
+    }
+
+    return myVector;
+}
+
 void final_reduced_matrix(int j)
 {
     for (int i = 1; i <= total_nodes; i++)
@@ -239,11 +260,10 @@ void prepare_for_action(int current_node, int source_node)
     myVector[current_node - 1][source_node - 1] = user_infinity; // so it can not go back before visiting every node
 
     int total_coming_cost = base_cost + source_to_curr_cost;
+     myVector = set_row_column_to_infinity(myVector,source_node-1,current_node-1);
 
     pq.push(make_pair(base_cost, make_pair(source_node, make_pair(current_node, myVector))));
-
     
-
     cout << "\nFor node " << pq.top().second.second.first << endl;
     cout << "Base cost is " << pq.top().first << endl;
     cout << "Source is " << pq.top().second.first << endl;
