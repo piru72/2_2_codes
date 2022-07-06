@@ -11,6 +11,12 @@ int user_infinity = 101;
 int base_cost = 0;
 int total_nodes = 5;
 
+typedef vector<vector<int>> myVector1;
+typedef pair<int, myVector1> visited_vector;
+typedef pair<int, visited_vector> predecessor;
+typedef pair<int, predecessor> base_costs;
+priority_queue<base_costs> pq;
+
 void sample_graph()
 {
 
@@ -121,20 +127,58 @@ void final_reduced_matrix(int j)
 void reduced_cost_matrix();
 void set_source_node_row_infinity(int source_node)
 {
-    int i = source_node ;
+    int i = source_node;
 
-    for (int j = 0 ; j < graph[i].size();j++)
+    for (int j = 0; j < graph[i].size(); j++)
     {
         graph[i][j] = user_infinity;
     }
+}
+void prepare_for_action(int, int);
+bool is_visited(int i)
+{
+    bool visit_status = true;
+    for (int j = 0; j < graph[i].size(); j++)
+    {
+        if (graph[i][j] != user_infinity)
+        {
+            visit_status = false;
+            break;
+        }
+    }
+
+    return visit_status;
 }
 int main()
 {
     sample_graph();
     reduced_cost_matrix();
-    int source_node = 1 ;
+    int source_node = 1;
     set_source_node_row_infinity(source_node);
     print_graph(total_nodes);
+
+    // bool visit_status = is_visited(row);
+
+    // for (int i = 1; i <= total_nodes; i++)
+    // {
+    //     if (is_visited(i))
+    //     {
+    //         cout << "Node " << i << " is visited" << endl;
+    //     }
+    //     else
+    //     {
+    //         cout << "Node " << i << " is not visited" << endl;
+    //     }
+    // }
+
+    // initializing primarily
+    for (int i = 1; i <= 5; i++)
+    {
+        if (i != source_node)
+        {
+            prepare_for_action(i, source_node);
+        }
+    }
 }
 
 void reduced_cost_matrix()
@@ -176,4 +220,32 @@ void reduced_cost_matrix()
     print_graph(total_nodes);
 
     cout << " \n The base cost is " << base_cost << endl;
+}
+void prepare_for_action(int current_node, int source_node)
+{
+
+    vector<vector<int>> myVector;
+
+    myVector.push_back(graph[1]);
+    myVector.push_back(graph[2]);
+    myVector.push_back(graph[3]);
+    myVector.push_back(graph[4]);
+    myVector.push_back(graph[5]);
+
+    // pq.push(make_pair(2, make_pair(3, make_pair(4, graph[1]))));
+    pq.push(make_pair(base_cost, make_pair(source_node, make_pair(current_node, myVector))));
+
+    cout << "\nFor node " << pq.top().second.second.first << endl;
+    cout << "Base cost is " << pq.top().first << endl;
+    cout << "Source is " << pq.top().second.first << endl;
+    cout << "The reduced cost matrix is" << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            cout << setw(6) << pq.top().second.second.second[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
