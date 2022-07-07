@@ -156,6 +156,7 @@ void set_source_node_row_infinity(int source_node)
     }
 }
 void prepare_for_action(int, int);
+void prepare_for_action_2(int, int, vector<vector<int>>);
 bool is_visited(int i)
 {
     bool visit_status = true;
@@ -175,9 +176,9 @@ int main()
     sample_graph();
     reduced_cost_matrix();
     int source_node = 1;
-    cout << "The source node is " << source_node << endl;
-    // set_source_node_row_infinity(source_node);
-    print_graph(total_nodes);
+    // cout << "The source node is " << source_node << endl;
+    //  set_source_node_row_infinity(source_node);
+    // print_graph(total_nodes);
 
     cout << "***** THE MAIN ACTION IS DOWN BELOW *****" << endl;
 
@@ -196,12 +197,55 @@ int main()
     // }
 
     // initializing primarily
+
     for (int i = 1; i <= 5; i++)
     {
         if (i != source_node)
         {
             prepare_for_action(i, source_node);
         }
+    }
+
+    while (!pq.empty())
+    {
+
+        cout << pq.size() << " is the size priority queue" << endl;
+        int current_source_node = pq.top().second.second.first;
+        int current_source_nodes_predecessor = pq.top().second.first;
+        int current_base_cost = pq.top().first;
+
+        cout << "\nFor node " << current_source_node << endl;
+        cout << "Base cost is " << current_base_cost << endl;
+        cout << "Source is " << current_source_nodes_predecessor << endl;
+
+        cout << "The reduced cost matrix is" << endl;
+
+        vector<vector<int>> myVector;
+
+        for (int i = 0; i < total_nodes; i++)
+        {
+            myVector.push_back(pq.top().second.second.second[i]);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                cout << setw(6) << myVector[i][j] << " ";
+            }
+            cout << endl;
+        }
+        pq = priority_queue<base_costs>();
+        for (int i = 0; i < total_nodes; i++)
+        {
+            if (myVector[i][0] != user_infinity)
+            {
+                // cout << " Node " << i + 1 << " isn't visited yet" << endl;
+                prepare_for_action_2(i + 1, current_source_node, myVector);
+            }
+        }
+
+        cout << pq.size() << " is the size priority queue" << endl;
+        break;
     }
 }
 
@@ -260,17 +304,55 @@ void prepare_for_action(int current_node, int source_node)
     myVector[current_node - 1][source_node - 1] = user_infinity; // so it can not go back before visiting every node
 
     int total_coming_cost = base_cost + source_to_curr_cost;
-     myVector = set_row_column_to_infinity(myVector,source_node-1,current_node-1);
+    myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
 
-    pq.push(make_pair(base_cost, make_pair(source_node, make_pair(current_node, myVector))));
-    
+    pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
+
+    // cout << "\nFor node " << pq.top().second.second.first << endl;
+    // cout << "Base cost is " << pq.top().first << endl;
+    // cout << "Source is " << pq.top().second.first << endl;
+    // cout << "Total coming cost " << total_coming_cost << endl;
+    // cout << "Source to current node cost = " << source_to_curr_cost << endl;
+    // cout << "The reduced cost matrix is" << endl;
+    // cout << myVector[current_node - 1][source_node - 1] << " Infinity setted to return path" << endl;
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     for (int j = 0; j < 5; j++)
+    //     {
+    //         cout << setw(6) << pq.top().second.second.second[i][j] << " ";
+    //     }
+    //     cout << endl;
+    //}
+    // cout << endl;
+}
+
+void prepare_for_action_2(int current_node, int source_node, vector<vector<int>> myVector1)
+{
+
+    cout << "\n\nSource is " << source_node << " current node is " << current_node << endl;
+
+    vector<vector<int>> myVector;
+
+    for (int i = 0 ; i < total_nodes ; i++)
+    {
+        myVector.push_back(myVector1[i]);
+    }
+    int source_to_curr_cost = myVector[source_node - 1][current_node - 1]; // saving the coming cost to currnode
+
+    myVector[current_node - 1][0] = user_infinity; // so it can not go back before visiting every node
+
+    int total_coming_cost = base_cost + source_to_curr_cost;
+    myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
+
+    pq.push(make_pair(25 * -1, make_pair(source_node, make_pair(current_node, myVector))));
+
     cout << "\nFor node " << pq.top().second.second.first << endl;
     cout << "Base cost is " << pq.top().first << endl;
     cout << "Source is " << pq.top().second.first << endl;
-    cout << "Total coming cost " << total_coming_cost << endl;
+    // // cout << "Total coming cost " << total_coming_cost << endl;
     cout << "Source to current node cost = " << source_to_curr_cost << endl;
     cout << "The reduced cost matrix is" << endl;
-    cout << myVector[current_node - 1][source_node - 1] << " Infinity setted to return path" << endl;
+    // cout << myVector[current_node - 1][source_node - 1] << " Infinity setted to return path" << endl;
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 5; j++)
