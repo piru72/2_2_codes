@@ -17,6 +17,8 @@ typedef pair<int, visited_vector> predecessor;
 typedef pair<int, predecessor> base_costs;
 priority_queue<base_costs> pq;
 
+int temp_cost;
+
 void sample_graph()
 {
 
@@ -170,6 +172,53 @@ bool is_visited(int i)
     }
 
     return visit_status;
+}
+vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
+{
+
+    for (int i = 0; i < myVector.size(); i++)
+
+    {
+        int minimum_cost = *min_element(myVector[i].begin(), myVector[i].end());
+
+        if (minimum_cost == 101)
+            min_costs_queue[0].push(0);
+        else
+            min_costs_queue[0].push(minimum_cost);
+    }
+
+    // for (int i = 1; i <= total_nodes; i++)
+    // {
+
+    //     if (graph[i][j] < minimum_cost)
+    //     {
+    //         minimum_cost = graph[i][j];
+    //     }
+    // }
+
+    int minimum_cost = user_infinity;
+
+    for (int j = 0; j < total_nodes; j++)
+    {
+        for (int i = 0; i < total_nodes; i++)
+        {
+            if (myVector[i][j] < minimum_cost)
+            {
+                minimum_cost = myVector[i][j];
+            }
+        }
+        min_costs_queue[1].push(minimum_cost);
+    }
+
+    showq(min_costs_queue[0]);
+    showq(min_costs_queue[1]);
+    queue<int> empty;
+    min_costs_queue[0] = empty;
+    min_costs_queue[1] = empty;
+
+    // min_costs_queue[1].push(minimum_cost);
+
+    return myVector;
 }
 int main()
 {
@@ -333,7 +382,7 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
 
     vector<vector<int>> myVector;
 
-    for (int i = 0 ; i < total_nodes ; i++)
+    for (int i = 0; i < total_nodes; i++)
     {
         myVector.push_back(myVector1[i]);
     }
@@ -343,6 +392,8 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
 
     int total_coming_cost = base_cost + source_to_curr_cost;
     myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
+
+    myVector = reduce_matrix(myVector);
 
     pq.push(make_pair(25 * -1, make_pair(source_node, make_pair(current_node, myVector))));
 
