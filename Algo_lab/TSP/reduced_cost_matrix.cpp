@@ -148,31 +148,10 @@ void final_reduced_matrix(int j)
 }
 
 void reduced_cost_matrix();
-void set_source_node_row_infinity(int source_node)
-{
-    int i = source_node;
 
-    for (int j = 0; j < graph[i].size(); j++)
-    {
-        graph[i][j] = user_infinity;
-    }
-}
 void prepare_for_action(int, int);
 void prepare_for_action_2(int, int, vector<vector<int>>);
-bool is_visited(int i)
-{
-    bool visit_status = true;
-    for (int j = 0; j < graph[i].size(); j++)
-    {
-        if (graph[i][j] != user_infinity)
-        {
-            visit_status = false;
-            break;
-        }
-    }
 
-    return visit_status;
-}
 vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
 {
 
@@ -187,15 +166,7 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
             min_costs_queue[0].push(minimum_cost);
     }
 
-    // for (int i = 1; i <= total_nodes; i++)
-    // {
-
-    //     if (graph[i][j] < minimum_cost)
-    //     {
-    //         minimum_cost = graph[i][j];
-    //     }
-    // }
-
+   
     int minimum_cost = user_infinity;
 
     for (int j = 0; j < total_nodes; j++)
@@ -239,7 +210,6 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
     min_costs_queue[0] = empty;
     min_costs_queue[1] = empty;
 
-    // min_costs_queue[1].push(minimum_cost);
 
     return myVector;
 }
@@ -265,26 +235,10 @@ int main()
     reduced_cost_matrix();
     int source_node = 1;
     // cout << "The source node is " << source_node << endl;
-    //  set_source_node_row_infinity(source_node);
     // print_graph(total_nodes);
 
     cout << "***** THE MAIN ACTION IS DOWN BELOW *****" << endl;
 
-    // bool visit_status = is_visited(row);
-
-    // for (int i = 1; i <= total_nodes; i++)
-    // {
-    //     if (is_visited(i))
-    //     {
-    //         cout << "Node " << i << " is visited" << endl;
-    //     }
-    //     else
-    //     {
-    //         cout << "Node " << i << " is not visited" << endl;
-    //     }
-    // }
-
-    // initializing primarily
 
     for (int i = 1; i <= 5; i++)
     {
@@ -450,7 +404,7 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     // cout << "Temp cost is " << temp_cost << endl;
 
     cout << "The reduced cost matrix is" << endl;
-    
+
     show_vector(pq.top().second.second.second);
     cout << endl;
 }
