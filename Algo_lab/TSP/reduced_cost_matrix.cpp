@@ -224,7 +224,7 @@ void show_vector(vector<vector<int>> myVector)
     }
 }
 
-int pp = 0;
+int debug_flag = 0;
 int main()
 {
     sample_graph();
@@ -271,19 +271,26 @@ int main()
         int pk = 0;
         for (int i = 0; i < total_nodes; i++)
         {
-            if (myVector[i][0] != user_infinity)
+            if (myVector[i][0] != user_infinity && debug_flag != 4)
             {
 
                 cout << "Going to visit node " << i + 1 << endl;
                 prepare_for_action_2(i + 1, current_source_node, myVector);
+                debug_flag += 1;
+            }
+            if (debug_flag == 4)
+            {
+                break;
             }
         }
 
         cout << pq.size() << " is the size priority queue" << endl;
 
         cout << "****** NEW LOOP STARTS FROM HERE************" << endl;
-
-        break;
+        if (debug_flag == 4)
+        {
+            break;
+        }
     }
 }
 
@@ -365,7 +372,7 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     cout << "Temp cost is " << temp_cost << endl;
     temp_cost = 0;
 
-    pq.push(make_pair(25 * -1, make_pair(source_node, make_pair(current_node, myVector))));
+    pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
 
     cout << "\nFor node " << pq.top().second.second.first << endl;
     cout << "Base cost is " << pq.top().first << endl;
