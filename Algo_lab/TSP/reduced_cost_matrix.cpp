@@ -64,7 +64,6 @@ void find_minimum_backing_cost(int j)
     int minimum_cost = user_infinity;
     for (int i = 1; i <= total_nodes; i++)
     {
-
         if (graph[i][j] < minimum_cost)
         {
             minimum_cost = graph[i][j];
@@ -77,10 +76,8 @@ void print_graph(int size)
 {
     for (int i = 1; i <= size; i++)
     {
-
         for (int j = 0; j < graph[i].size(); j++)
         {
-
             cout << setw(6) << graph[i][j] << " ";
         }
         cout << "\n";
@@ -166,7 +163,6 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
             min_costs_queue[0].push(minimum_cost);
     }
 
-   
     int minimum_cost = user_infinity;
 
     for (int j = 0; j < total_nodes; j++)
@@ -178,7 +174,10 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
                 minimum_cost = myVector[i][j];
             }
         }
-        min_costs_queue[1].push(minimum_cost);
+        if (minimum_cost == 101)
+            min_costs_queue[1].push(0);
+        else
+            min_costs_queue[1].push(minimum_cost);
     }
 
     for (int i = 0; i < total_nodes; i++)
@@ -210,14 +209,11 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
     min_costs_queue[0] = empty;
     min_costs_queue[1] = empty;
 
-
     return myVector;
 }
 
 void show_vector(vector<vector<int>> myVector)
-
 {
-
     for (int i = 0; i < myVector.size(); i++)
     {
         for (int j = 0; j < myVector[i].size(); j++)
@@ -239,7 +235,6 @@ int main()
 
     cout << "***** THE MAIN ACTION IS DOWN BELOW *****" << endl;
 
-
     for (int i = 1; i <= 5; i++)
     {
         if (i != source_node)
@@ -252,7 +247,6 @@ int main()
     while (!pq.empty())
     {
 
-        // cout << pq.size() << " is the size priority queue" << endl;
         int current_source_node = pq.top().second.second.first;
         int current_source_nodes_predecessor = pq.top().second.first;
         int current_base_cost = pq.top().first * -1;
@@ -335,39 +329,14 @@ void reduced_cost_matrix()
 }
 void prepare_for_action(int current_node, int source_node)
 {
-
     vector<vector<int>> myVector;
-
-    myVector.push_back(graph[1]);
-    myVector.push_back(graph[2]);
-    myVector.push_back(graph[3]);
-    myVector.push_back(graph[4]);
-    myVector.push_back(graph[5]);
-    int source_to_curr_cost = myVector[source_node - 1][current_node - 1]; // saving the coming cost to currnode
-
-    myVector[current_node - 1][source_node - 1] = user_infinity; // so it can not go back before visiting every node
-
+    for (int i = 1; i <= 5; i++)
+        myVector.push_back(graph[i]);
+    int source_to_curr_cost = myVector[source_node - 1][current_node - 1];
+    myVector[current_node - 1][source_node - 1] = user_infinity;
     int total_coming_cost = base_cost + source_to_curr_cost;
     myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
-
     pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
-
-    // cout << "\nFor node " << pq.top().second.second.first << endl;
-    // cout << "Base cost is " << pq.top().first << endl;
-    // cout << "Source is " << pq.top().second.first << endl;
-    // cout << "Total coming cost " << total_coming_cost << endl;
-    // cout << "Source to current node cost = " << source_to_curr_cost << endl;
-    // cout << "The reduced cost matrix is" << endl;
-    // cout << myVector[current_node - 1][source_node - 1] << " Infinity setted to return path" << endl;
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     for (int j = 0; j < 5; j++)
-    //     {
-    //         cout << setw(6) << pq.top().second.second.second[i][j] << " ";
-    //     }
-    //     cout << endl;
-    //}
-    // cout << endl;
 }
 
 void prepare_for_action_2(int current_node, int source_node, vector<vector<int>> myVector1)
@@ -401,7 +370,6 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     cout << "\nFor node " << pq.top().second.second.first << endl;
     cout << "Base cost is " << pq.top().first << endl;
     cout << "Source is " << pq.top().second.first << endl;
-    // cout << "Temp cost is " << temp_cost << endl;
 
     cout << "The reduced cost matrix is" << endl;
 
