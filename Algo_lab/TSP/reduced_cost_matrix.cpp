@@ -244,6 +244,20 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
     return myVector;
 }
 
+void show_vector(vector<vector<int>> myVector)
+
+{
+
+    for (int i = 0; i < myVector.size(); i++)
+    {
+        for (int j = 0; j < myVector[i].size(); j++)
+        {
+            cout << setw(6) << myVector[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
 int pp = 0;
 int main()
 {
@@ -302,14 +316,9 @@ int main()
         {
             myVector.push_back(pq.top().second.second.second[i]);
         }
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                cout << setw(6) << myVector[i][j] << " ";
-            }
-            cout << endl;
-        }
+
+        show_vector(myVector);
+
         pq = priority_queue<base_costs>();
         int pk = 0;
         for (int i = 0; i < total_nodes; i++)
@@ -433,7 +442,7 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     cout << "Temp cost is " << temp_cost << endl;
     temp_cost = 0;
 
-    pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
+    pq.push(make_pair(25 * -1, make_pair(source_node, make_pair(current_node, myVector))));
 
     cout << "\nFor node " << pq.top().second.second.first << endl;
     cout << "Base cost is " << pq.top().first << endl;
@@ -441,14 +450,7 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     // cout << "Temp cost is " << temp_cost << endl;
 
     cout << "The reduced cost matrix is" << endl;
-    // cout << myVector[current_node - 1][source_node - 1] << " Infinity setted to return path" << endl;
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            cout << setw(6) << pq.top().second.second.second[i][j] << " ";
-        }
-        cout << endl;
-    }
+    
+    show_vector(pq.top().second.second.second);
     cout << endl;
 }
