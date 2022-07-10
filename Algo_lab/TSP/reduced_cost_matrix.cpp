@@ -275,9 +275,9 @@ int main()
             {
 
                 cout << "Going to visit node " << i + 1 << endl;
-                prepare_for_action_2(i + 1, current_source_node, myVector);
                 debug_flag += 1;
-            }
+                prepare_for_action_2(i + 1, current_source_node, myVector);
+                        }
             if (debug_flag == 4)
             {
                 break;
@@ -379,7 +379,6 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     cout << "Source is " << pq.top().second.first << endl;
 
     cout << "The reduced cost matrix is" << endl;
-
     show_vector(pq.top().second.second.second);
     cout << endl;
 }
