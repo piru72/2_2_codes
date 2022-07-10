@@ -66,51 +66,6 @@ void sample_graph()
     g = empty;
 }
 
-void find_minimum_going_cost(int i)
-{
-    int minimum_cost = *min_element(graph[i].begin(), graph[i].end());
-    min_costs_queue[0].push(minimum_cost);
-}
-
-void find_minimum_backing_cost(int j)
-{
-    int minimum_cost = user_infinity;
-    for (int i = 1; i <= total_nodes; i++)
-    {
-        if (graph[i][j] < minimum_cost)
-        {
-            minimum_cost = graph[i][j];
-        }
-    }
-
-    min_costs_queue[1].push(minimum_cost);
-}
-void print_graph(int size)
-{
-    for (int i = 1; i <= size; i++)
-    {
-        for (int j = 0; j < graph[i].size(); j++)
-        {
-            cout << setw(6) << graph[i][j] << " ";
-        }
-        cout << "\n";
-    }
-}
-
-void initial_reduced_matrix(int i)
-{
-
-    for (int j = 0; j < graph[i].size(); j++)
-    {
-
-        if (i - 1 != j)
-        {
-            graph[i][j] -= min_costs_queue[0].front();
-        }
-    }
-    base_cost += min_costs_queue[0].front();
-    min_costs_queue[0].pop();
-}
 
 void showq(queue<int> gq)
 {
@@ -155,22 +110,10 @@ vector<vector<int>> set_row_column_to_infinity(vector<vector<int>> myVector, int
     return myVector;
 }
 
-void final_reduced_matrix(int j)
-{
-    for (int i = 1; i <= total_nodes; i++)
-    {
-        if (i - 1 != j)
-        {
-            graph[i][j] -= min_costs_queue[1].front();
-        }
-    }
-    base_cost += min_costs_queue[1].front();
-    min_costs_queue[1].pop();
-}
 
-void reduced_cost_matrix();
 
-void prepare_for_action(int, int);
+
+
 void prepare_for_action_2(int, int, vector<vector<int>>);
 
 vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
@@ -235,6 +178,7 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
     if (base_cost == 0)
     {
         base_cost = temp_cost;
+        temp_cost = 0;
     }
 
     return myVector;
@@ -243,70 +187,77 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
 int debug_flag = 0;
 int main()
 {
+    int source_node = 1;
     sample_graph();
-
     graph = reduce_matrix(graph);
-    // reduced_cost_matrix();
     show_vector(graph);
+    cout << "The base cost is   " << base_cost << endl;
+    cout << "The source node is " << source_node << endl;
 
-    cout << "The base cost is " << base_cost << endl;
+    cout << "\n\n***** THE MAIN ACTION IS DOWN BELOW *****" << endl;
 
-    cout << "YEPPI" << endl;
-    // int source_node = 1;
-
-    // cout << "***** THE MAIN ACTION IS DOWN BELOW *****" << endl;
-
-    // for (int i = 1; i <= 5; i++)
-    // {
-    //     if (i != source_node)
-    //     {
-    //         prepare_for_action(i, source_node);
-    //     }
-    // }
-
-    // int end_node;
-    // while (!pq.empty())
-    // {
-
-    //     int current_source_node = pq.top().second.second.first;
-    //     int current_source_nodes_predecessor = pq.top().second.first;
-    //     int current_base_cost = pq.top().first * -1;
-    //     base_cost = current_base_cost;
-
-    //     end_node = current_source_node;
-
-    //     cout << "Source is " << current_source_nodes_predecessor << endl;
-
-    //     vector<vector<int>> myVector;
-
-    //     for (int i = 0; i < total_nodes; i++)
-    //     {
-    //         myVector.push_back(pq.top().second.second.second[i]);
-    //     }
-    //     pq = priority_queue<base_costs>();
-
-    //     for (int i = 0; i < total_nodes; i++)
-    //     {
-    //         if (myVector[i][0] != user_infinity)
-    //         {
-    //             prepare_for_action_2(i + 1, current_source_node, myVector);
-    //         }
-    //     }
-    // }
-
-    // cout << "End node is " << end_node << endl;
-}
-
-void prepare_for_action(int current_node, int source_node)
-{
-    vector<vector<int>> myVector;
     for (int i = 1; i <= 5; i++)
-        myVector.push_back(graph[i]);
-    int source_to_curr_cost = myVector[source_node - 1][current_node - 1];
-    myVector[current_node - 1][source_node - 1] = user_infinity;
-    int total_coming_cost = base_cost + source_to_curr_cost;
-    myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
-    pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
+    {
+        if (i != source_node)
+        {
+            prepare_for_action_2(i, source_node, graph);
+        }
+    }
+
+    
+
+    // int current_source_node = pq.top().second.second.first;
+    // int current_source_nodes_predecessor = pq.top().second.first;
+    // int current_base_cost = pq.top().first * -1;
+    // base_cost = current_base_cost;
+
+    // cout << "\nFor node " << current_source_node << endl;
+    // //end_node = current_source_node;
+    // cout << "Base cost is " << current_base_cost << endl;
+    // cout << "Source is " << current_source_nodes_predecessor << endl;
+
+    // cout << "The reduced cost matrix is" << endl;
+
+    // vector<vector<int>> myVector;
+
+    // for (int i = 0; i < total_nodes; i++)
+    // {
+    //     myVector.push_back(pq.top().second.second.second[i]);
+    // }
+
+    //show_vector(myVector);
+
+    int end_node;
+    while (!pq.empty())
+    {
+
+        int current_source_node = pq.top().second.second.first;
+        int current_source_nodes_predecessor = pq.top().second.first;
+        int current_base_cost = pq.top().first * -1;
+        base_cost = current_base_cost;
+
+        end_node = current_source_node;
+
+        cout << "Source is " << current_source_nodes_predecessor << endl;
+
+        vector<vector<int>> myVector;
+
+        for (int i = 0; i < total_nodes; i++)
+        {
+            myVector.push_back(pq.top().second.second.second[i]);
+        }
+        pq = priority_queue<base_costs>();
+
+        for (int i = 0; i < total_nodes; i++)
+        {
+            if (myVector[i][0] != user_infinity)
+            {
+                prepare_for_action_2(i + 1, current_source_node, myVector);
+            }
+        }
+    }
+
+    cout << "End node is " << end_node << endl;
 }
 
 void prepare_for_action_2(int current_node, int source_node, vector<vector<int>> myVector1)
@@ -316,12 +267,17 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
         myVector.push_back(myVector1[i]);
 
     int source_to_curr_cost = myVector[source_node - 1][current_node - 1]; // saving the coming cost to currnode
-    myVector[current_node - 1][0] = user_infinity;                         // so it can not go back before visiting every node
+    myVector[current_node - 1][0] = user_infinity;                         // so it can not go back before visiting every node  //! this is the bug a static backtracing
     myVector = set_row_column_to_infinity(myVector, source_node - 1, current_node - 1);
     myVector = reduce_matrix(myVector);
     int total_coming_cost = base_cost + source_to_curr_cost + temp_cost;
     temp_cost = 0;
     pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
+
+    // pq.push(make_pair(25 * -1, make_pair(source_node, make_pair(current_node, myVector))));
+
+    //show_vector(myVector);
+    //cout << endl;
 }
 
 /*
