@@ -163,6 +163,18 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
             min_costs_queue[0].push(minimum_cost);
     }
 
+    
+    for (int i = 0; i < total_nodes; i++)
+    {
+        for (int j = 0; j < total_nodes; j++)
+        {
+            if (myVector[i][j] != user_infinity)
+                myVector[i][j] -= min_costs_queue[0].front();
+        }
+        temp_cost += min_costs_queue[0].front();
+        min_costs_queue[0].pop();
+    }
+
     int minimum_cost = user_infinity;
 
     for (int j = 0; j < total_nodes; j++)
@@ -180,16 +192,10 @@ vector<vector<int>> reduce_matrix(vector<vector<int>> myVector)
             min_costs_queue[1].push(minimum_cost);
     }
 
-    for (int i = 0; i < total_nodes; i++)
-    {
-        for (int j = 0; j < total_nodes; j++)
-        {
-            if (myVector[i][j] != user_infinity)
-                myVector[i][j] -= min_costs_queue[0].front();
-        }
-        temp_cost += min_costs_queue[0].front();
-        min_costs_queue[0].pop();
-    }
+    //showq(min_costs_queue[0]);
+    //showq(min_costs_queue[0]);
+
+
 
     for (int j = 0; j < total_nodes; j++)
     {
@@ -244,6 +250,7 @@ int main()
     }
 
     int ik = 0;
+    int end_node;
     while (!pq.empty())
     {
 
@@ -253,6 +260,7 @@ int main()
         base_cost = current_base_cost;
 
         cout << "\nFor node " << current_source_node << endl;
+        end_node= current_source_node;
         cout << "Base cost is " << current_base_cost << endl;
         cout << "Source is " << current_source_nodes_predecessor << endl;
 
@@ -275,23 +283,25 @@ int main()
             {
 
                 cout << "Going to visit node " << i + 1 << endl;
-                debug_flag += 1;
+               // debug_flag += 1;
                 prepare_for_action_2(i + 1, current_source_node, myVector);
                         }
-            if (debug_flag == 4)
-            {
-                break;
-            }
+            // if (debug_flag == 4)
+            // {
+            //     break;
+            // }
         }
 
         cout << pq.size() << " is the size priority queue" << endl;
 
         cout << "****** NEW LOOP STARTS FROM HERE************" << endl;
-        if (debug_flag == 4)
-        {
-            break;
-        }
+        // if (debug_flag == 4)
+        // {
+        //     break;
+        // }
     }
+
+    cout << "End node is " << end_node << endl;
 }
 
 void reduced_cost_matrix()
@@ -366,19 +376,19 @@ void prepare_for_action_2(int current_node, int source_node, vector<vector<int>>
     myVector = reduce_matrix(myVector);
 
     int total_coming_cost = base_cost + source_to_curr_cost + temp_cost;
-    cout << " Base cost is " << base_cost << endl;
-    cout << "Total coming cost " << total_coming_cost << endl;
-    cout << "Source to current node cost = " << source_to_curr_cost << endl;
-    cout << "Temp cost is " << temp_cost << endl;
+   // cout << " Base cost is " << base_cost << endl;
+    //cout << "Total coming cost " << total_coming_cost << endl;
+   // cout << "Source to current node cost = " << source_to_curr_cost << endl;
+    //cout << "Temp cost is " << temp_cost << endl;
     temp_cost = 0;
 
     pq.push(make_pair(total_coming_cost * -1, make_pair(source_node, make_pair(current_node, myVector))));
 
-    cout << "\nFor node " << pq.top().second.second.first << endl;
-    cout << "Base cost is " << pq.top().first << endl;
-    cout << "Source is " << pq.top().second.first << endl;
+    //cout << "\nFor node " << pq.top().second.second.first << endl;
+    //cout << "Base cost is " << pq.top().first << endl;
+    //cout << "Source is " << pq.top().second.first << endl;
 
-    cout << "The reduced cost matrix is" << endl;
-    show_vector(pq.top().second.second.second);
-    cout << endl;
+    //cout << "The reduced cost matrix is" << endl;
+    //show_vector(pq.top().second.second.second);
+    //cout << endl;
 }
